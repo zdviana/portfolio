@@ -1,0 +1,14 @@
+.section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 96px 16px 0;
+}
+
+.title {
+  color: var(--green);
+  margin-bottom: 32px;
+}
+
+.prompt {
+  color: var(--muted);
+}

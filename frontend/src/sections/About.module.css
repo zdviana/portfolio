@@ -1,0 +1,47 @@
+.layout {
+  display: grid;
+  gap: 32px;
+  align-items: start;
+}
+
+.text {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.card {
+  margin: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.card code {
+  font-family: inherit;
+}
+
+.key {
+  color: var(--green-soft);
+}
+
+.string {
+  color: var(--text);
+}
+
+.punct {
+  color: var(--muted);
+}
+
+@media (min-width: 720px) {
+  .layout {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+  }
+}

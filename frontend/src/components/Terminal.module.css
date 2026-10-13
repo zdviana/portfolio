@@ -1,0 +1,62 @@
+.window {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--green-dim);
+  border-radius: 8px;
+  box-shadow: var(--glow);
+  overflow: hidden;
+}
+
+.bar {
+  display: flex;
+  gap: 6px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green-dim);
+}
+
+.screen {
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  min-height: 180px;
+}
+
+.screen p,
+.name {
+  position: relative;
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+}
+
+.command {
+  color: var(--green-soft);
+}
+
+.name {
+  font-size: clamp(24px, 7vw, 36px);
+  color: var(--green);
+  text-shadow: var(--glow);
+  margin-bottom: 16px;
+}
+
+.output {
+  color: var(--text);
+}
+
+.cursor {
+  color: var(--green);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,19 @@
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--green-dim);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.highlight {
+  padding: 6px 16px;
+  border-color: var(--green);
+  box-shadow: var(--glow);
+  font-size: 16px;
+  font-weight: 700;
+}

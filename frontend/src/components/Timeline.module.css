@@ -1,0 +1,59 @@
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 32px;
+  border-left: 2px solid var(--green-dim);
+}
+
+.item {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+/* Ponto verde centralizado sobre a linha (34px = borda + padding do <ol>). */
+.item::before {
+  content: '';
+  position: absolute;
+  left: -39px;
+  top: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: var(--glow);
+}
+
+.title {
+  color: var(--green);
+}
+
+.meta {
+  margin: 4px 0 12px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.highlights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.highlights li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 6px;
+}
+
+.highlights li::before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  color: var(--green-soft);
+  font-family: var(--font-mono);
+}

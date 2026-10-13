@@ -1,0 +1,74 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--nav-height) 0 64px;
+  overflow: hidden;
+}
+
+.rain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 4px 12px;
+  border: 1px solid var(--alert);
+  border-radius: 999px;
+  color: var(--alert);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.terminal {
+  width: 100%;
+  max-width: 640px;
+}
+
+.tagline {
+  max-width: 60ch;
+  margin: 0;
+  font-size: 18px;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.social a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.social a:hover {
+  color: var(--green);
+}

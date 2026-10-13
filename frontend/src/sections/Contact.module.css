@@ -1,0 +1,39 @@
+.headline {
+  max-width: 60ch;
+  margin: 0 0 40px;
+  font-size: 18px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+}
+
+@media (min-width: 800px) {
+  .columns {
+    grid-template-columns: 3fr 2fr;
+  }
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+}
+
+.links li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-wrap: anywhere;
+}
+
+.label {
+  font-size: 14px;
+  color: var(--muted);
+}

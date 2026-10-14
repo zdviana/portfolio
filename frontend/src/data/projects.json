@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "slug": "portfolio",
+    "title": "Portfólio full stack",
+    "description": "Este site: front-end em React consumindo uma API REST própria em Spring Boot, com PostgreSQL, Flyway, testes e documentação Swagger.",
+    "tags": ["React", "Spring Boot", "PostgreSQL", "Docker"],
+    "repoUrl": "https://github.com/zdviana/portfolio",
+    "backendRepoUrl": null,
+    "demoUrl": null,
+    "imageUrl": null,
+    "featured": true
+  },
+  {
+    "id": 2,
+    "slug": "estufa-iot",
+    "title": "Estufa automatizada IoT (TCC)",
+    "description": "Monitoramento e controle de temperatura, umidade e iluminação com Arduino e sensores, com interface web em tempo real.",
+    "tags": ["Arduino", "C/C++", "Node.js", "JavaScript", "PHP"],
+    "repoUrl": "https://github.com/zdviana/tcc_interface-web",
+    "backendRepoUrl": null,
+    "demoUrl": null,
+    "imageUrl": null,
+    "featured": false
+  },
+  {
+    "id": 3,
+    "slug": "agenda-estagio",
+    "title": "Sistema de agenda (estágio)",
+    "description": "Agenda com calendário desenvolvida no estágio na CPT-Software: front-end em React com FullCalendar e API em Node.js/Express com TypeScript e MySQL.",
+    "tags": ["React", "Node.js", "Express", "TypeScript", "MySQL", "Docker"],
+    "repoUrl": "https://github.com/zdviana/projeto_estagio_front",
+    "backendRepoUrl": "https://github.com/zdviana/projeto_estagio_backend",
+    "demoUrl": null,
+    "imageUrl": null,
+    "featured": false
+  }
+]

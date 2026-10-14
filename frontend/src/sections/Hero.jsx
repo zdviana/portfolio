@@ -21,7 +21,10 @@ export default function Hero() {
         <p className={styles.tagline}>{profile.tagline}</p>
 
         <div className={styles.actions}>
-          <Button href={profile.links.cv} download variant="primary">
+          <Button href="#projetos" variant="primary">
+            Ver projetos
+          </Button>
+          <Button href={profile.links.cv} download variant="ghost">
             Baixar CV
           </Button>
           <Button

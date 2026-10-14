@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import Button from './Button'
+import { submitContact } from './submitContact'
 import { validateContact } from './validateContact'
 import styles from './ContactForm.module.css'
 
@@ -10,8 +11,10 @@ const FIELDS = [
 ]
 const FIELD_ORDER = FIELDS.map((field) => field.name)
 const EMPTY_VALUES = { nome: '', email: '', mensagem: '' }
+const SENDING_STATUS = 'Enviando...'
+const SUCCESS_STATUS = 'Mensagem enviada! Vou responder em breve.'
 
-// Sem API nesta fase: o envio abre o cliente de e-mail do visitante com a mensagem pronta.
+// Usado quando a API não responde: o envio abre o cliente de e-mail do visitante com a mensagem pronta.
 function buildMailto(destination, { nome, email, mensagem }) {
   const subject = `Contato pelo portfólio — ${nome.trim()}`
   const body = `${mensagem.trim()}\n\n---\nNome: ${nome.trim()}\nE-mail: ${email.trim()}`
@@ -22,6 +25,7 @@ export default function ContactForm({ email: destination }) {
   const [values, setValues] = useState(EMPTY_VALUES)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('')
+  const [sending, setSending] = useState(false)
   const fieldRefs = useRef({})
 
   function handleChange(event) {
@@ -29,22 +33,42 @@ export default function ContactForm({ email: destination }) {
     setValues((previous) => ({ ...previous, [name]: value }))
   }
 
-  function handleSubmit(event) {
+  function focusFirstInvalid(found) {
+    const firstInvalid = FIELD_ORDER.find((name) => found[name])
+    if (firstInvalid) fieldRefs.current[firstInvalid]?.focus()
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault()
     const found = validateContact(values)
     setErrors(found)
 
-    const firstInvalid = FIELD_ORDER.find((name) => found[name])
-    if (firstInvalid) {
+    if (Object.keys(found).length > 0) {
       setStatus('')
-      fieldRefs.current[firstInvalid]?.focus()
+      focusFirstInvalid(found)
       return
     }
 
-    window.location.href = buildMailto(destination, values)
-    setStatus(
-      `Seu aplicativo de e-mail foi aberto. Se nada aconteceu, escreva diretamente para ${destination}.`,
-    )
+    setSending(true)
+    setStatus(SENDING_STATUS)
+    try {
+      const result = await submitContact(values)
+      if (result.errors) {
+        setErrors(result.errors)
+        setStatus('')
+        focusFirstInvalid(result.errors)
+        return
+      }
+      setValues(EMPTY_VALUES)
+      setStatus(SUCCESS_STATUS)
+    } catch {
+      window.location.href = buildMailto(destination, values)
+      setStatus(
+        `Seu aplicativo de e-mail foi aberto. Se nada aconteceu, escreva diretamente para ${destination}.`,
+      )
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -87,7 +111,9 @@ export default function ContactForm({ email: destination }) {
         )
       })}
 
-      <Button type="submit">Enviar mensagem</Button>
+      <Button type="submit" disabled={sending}>
+        Enviar mensagem
+      </Button>
       <p role="status" className={styles.status}>
         {status}
       </p>

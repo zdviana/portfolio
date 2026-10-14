@@ -1,0 +1,12 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.swagger {
+  margin: 32px 0 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--muted);
+}

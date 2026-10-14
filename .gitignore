@@ -5,3 +5,6 @@ node_modules/
 
 # Instruções para agentes de IA — mantidas só localmente
 agents.md
+
+# Configurações locais do editor
+.vscode/

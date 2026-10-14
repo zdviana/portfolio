@@ -1,5 +1,6 @@
 import ContactForm from '../components/ContactForm'
 import Section from '../components/Section'
+import WhatsAppLink from '../components/WhatsAppLink'
 import profile from '../data/profile.json'
 import styles from './Contact.module.css'
 
@@ -22,6 +23,10 @@ export default function Contact() {
         <ContactForm email={profile.links.email} />
 
         <ul className={styles.links}>
+          <li>
+            <span className={styles.label}>whatsapp</span>
+            <WhatsAppLink {...profile.links.whatsapp} />
+          </li>
           <li>
             <span className={styles.label}>e-mail</span>
             <a href={`mailto:${profile.links.email}`}>{profile.links.email}</a>

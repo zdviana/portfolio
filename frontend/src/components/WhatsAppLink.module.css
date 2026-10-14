@@ -1,0 +1,27 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  padding: 10px 16px;
+  border: 1px solid var(--green-soft);
+  border-radius: 999px;
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    box-shadow 0.2s,
+    background 0.2s;
+}
+
+.link:hover {
+  background: var(--green-dim);
+  box-shadow: var(--glow);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}

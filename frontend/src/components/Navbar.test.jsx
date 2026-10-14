@@ -16,7 +16,7 @@ describe('Navbar', () => {
     )
   })
 
-  it('contém os 5 links de seção na navegação principal', () => {
+  it('contém os 6 links de seção na navegação principal', () => {
     render(<Navbar />)
 
     const nav = screen.getByRole('navigation', { name: 'Principal' })
@@ -24,6 +24,13 @@ describe('Navbar', () => {
       .getAllByRole('link')
       .map((link) => link.getAttribute('href'))
 
-    expect(hrefs).toEqual(['#home', '#sobre', '#stack', '#experiencia', '#contato'])
+    expect(hrefs).toEqual([
+      '#home',
+      '#sobre',
+      '#stack',
+      '#experiencia',
+      '#projetos',
+      '#contato',
+    ])
   })
 })

@@ -5,16 +5,32 @@
 }
 
 .text {
-  margin: 0;
-  font-size: 16px;
+  max-width: 68ch;
+  font-size: 17px;
+  line-height: 1.75;
   color: var(--text);
+}
+
+.text p {
+  margin: 0 0 20px;
+  text-align: justify;
+  hyphens: manual;
+}
+
+.text p:first-child {
+  padding-left: 16px;
+  border-left: 2px solid var(--green);
+}
+
+.text p:last-child {
+  margin-bottom: 0;
 }
 
 .card {
   margin: 0;
-  max-width: 100%;
-  overflow-x: auto;
-  padding: 20px;
+  /* Quebra linhas longas em telas estreitas em vez de exibir rolagem horizontal. */
+  white-space: pre-wrap;
+  padding: 20px 24px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -41,7 +57,14 @@
 
 @media (min-width: 720px) {
   .layout {
-    grid-template-columns: 1.2fr 1fr;
+    /* O card ocupa a largura do seu conteúdo; o texto fica com o restante. */
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 48px;
+  }
+
+  /* O card acompanha a leitura do texto longo. */
+  .card {
+    position: sticky;
+    top: calc(var(--nav-height) + 24px);
   }
 }

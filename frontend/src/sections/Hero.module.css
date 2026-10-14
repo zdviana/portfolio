@@ -40,7 +40,8 @@
 
 .terminal {
   width: 100%;
-  max-width: 640px;
+  /* Largura suficiente para o cargo caber em uma linha no desktop. */
+  max-width: 720px;
 }
 
 .tagline {

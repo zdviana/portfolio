@@ -4,6 +4,8 @@ import Section from '../components/Section'
 import styles from './About.module.css'
 
 const { text, card } = profile.about
+// Parágrafos são separados por linha em branco no profile.json.
+const paragraphs = text.split(/\n\s*\n/)
 
 function punct(symbol) {
   return <span className={styles.punct}>{symbol}</span>
@@ -57,7 +59,11 @@ export default function About() {
   return (
     <Section id="sobre" command="./sobre">
       <div className={styles.layout}>
-        <p className={styles.text}>{text}</p>
+        <div className={styles.text}>
+          {paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
         <CardJson data={card} />
       </div>
     </Section>

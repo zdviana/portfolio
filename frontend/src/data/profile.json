@@ -1,7 +1,7 @@
 {
-  "name": "Davi Viana",
-  "role": "Desenvolvedor Full Stack | Java · Spring Boot · React",
-  "tagline": "Construo APIs robustas em Java e interfaces rápidas em React. Engenheiro de Computação com experiência em sistemas de saúde.",
+  "name": "Davi Viana Oliveira Mendes",
+  "role": "Desenvolvedor Full Stack | JavaScript · React · Java · Spring Boot",
+  "tagline": "Construo APIs robustas em Java e interfaces rápidas em React.",
   "available": true,
   "links": {
     "email": "daviviana.dev@gmail.com",
@@ -10,11 +10,11 @@
     "cv": "/cv-davi-viana.pdf"
   },
   "about": {
-    "text": "Sou Engenheiro de Computação formado pela Univiçosa e desenvolvedor focado em Java/Spring Boot no back-end e React no front-end. Trabalhei na Fundação São Francisco Xavier mantendo o sistema de integração DRG, onde automatizei consultas em PL/SQL e contribuí para a estabilidade de uma aplicação usada no dia a dia hospitalar. Gosto de entender o problema de ponta a ponta — do banco de dados à tela — e estou sempre aprendendo.",
+    "text": "Sou Engenheiro de Computação formado pela UNIVIÇOSA e desenvolvedor full stack, com experiência no desenvolvimento, manutenção e aprimoramento de aplicações web e sistemas de integração. Durante minha atuação na Fundação São Francisco Xavier, trabalhei na manutenção do sistema de integração DRG, utilizando Java, Spring Boot e PL/SQL para apoiar a integração entre sistemas, automatizar consultas ao banco de dados e contribuir para a estabilidade e confiabilidade de aplicações utilizadas na rotina hospitalar.",
     "card": {
       "local": "Ipanema-MG",
       "formação": "Eng. Computação",
-      "foco": ["Java", "Spring Boot", "React"],
+      "foco": ["Java", "Spring Boot","JavaScript", "React"],
       "inglês": "intermediário"
     }
   },
@@ -29,9 +29,9 @@
       "items": ["Oracle (PL/SQL)", "PostgreSQL", "MySQL"]
     },
     { "group": "Ferramentas", "items": ["Git", "Docker", "Node.js", "Linux"] },
-    { "group": "Também já usei", "items": ["C/C++", "Arduino/IoT", "PHP"] }
+    { "group": "Também já usei", "items": ["C/C++", "PHP", "Arduino/IoT"] }
   ],
-  "highlightSkills": ["Java", "Spring Boot", "React"],
+  "highlightSkills": ["Java", "Spring Boot", "JavaScript", "React"],
   "experience": [
     {
       "role": "Desenvolvedor",

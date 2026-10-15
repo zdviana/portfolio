@@ -45,6 +45,24 @@
   color: var(--alert);
 }
 
+.fallback {
+  padding: 16px;
+  border: 1px solid var(--alert);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.fallbackText {
+  margin: 0 0 12px;
+  color: var(--text);
+}
+
+.fallbackActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .status {
   min-height: 1.6em;
   margin: 0;

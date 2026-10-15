@@ -1,4 +1,5 @@
 import ContactForm from '../components/ContactForm'
+import CopyEmail from '../components/CopyEmail'
 import Section from '../components/Section'
 import WhatsAppLink from '../components/WhatsAppLink'
 import profile from '../data/profile.json'
@@ -20,7 +21,7 @@ export default function Contact() {
       <p className={styles.headline}>{profile.contact.headline}</p>
 
       <div className={styles.columns}>
-        <ContactForm email={profile.links.email} />
+        <ContactForm email={profile.links.email} whatsapp={profile.links.whatsapp.number} />
 
         <ul className={styles.links}>
           <li>
@@ -29,7 +30,7 @@ export default function Contact() {
           </li>
           <li>
             <span className={styles.label}>e-mail</span>
-            <a href={`mailto:${profile.links.email}`}>{profile.links.email}</a>
+            <CopyEmail email={profile.links.email} />
           </li>
           {directLinks.map(({ label, href }) => (
             <li key={label}>

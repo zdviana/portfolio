@@ -73,3 +73,13 @@
 .social a:hover {
   color: var(--green);
 }
+
+/* Mesmo visual dos links GitHub/LinkedIn ao lado. */
+.socialButton {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.socialButton:hover {
+  color: var(--green);
+}

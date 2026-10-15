@@ -1,5 +1,6 @@
 import profile from '../data/profile.json'
 import Button from '../components/Button'
+import CopyEmail from '../components/CopyEmail'
 import MatrixRain from '../components/MatrixRain'
 import Terminal from '../components/Terminal'
 import styles from './Hero.module.css'
@@ -54,9 +55,9 @@ export default function Hero() {
           >
             LinkedIn
           </a>
-          <a href={`mailto:${profile.links.email}`} aria-label="Enviar e-mail">
+          <CopyEmail email={profile.links.email} className={styles.socialButton}>
             E-mail
-          </a>
+          </CopyEmail>
         </nav>
       </div>
     </section>

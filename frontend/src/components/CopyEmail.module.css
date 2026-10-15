@@ -1,0 +1,25 @@
+.wrapper {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+/* Botão com aparência de link, igual aos demais contatos. */
+.button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--green);
+  text-decoration: underline;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.feedback {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--green-soft);
+}

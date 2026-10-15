@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { sendContact } from '../services/api'
 import ContactForm from './ContactForm'
@@ -21,10 +21,6 @@ function httpError(status, data) {
 describe('ContactForm', () => {
   beforeEach(() => {
     sendContact.mockReset()
-  })
-
-  afterEach(() => {
-    vi.unstubAllGlobals()
   })
 
   it('mostra erros, marca campos inválidos e foca o primeiro ao enviar vazio', async () => {
@@ -74,17 +70,25 @@ describe('ContactForm', () => {
     expect(email).toHaveFocus()
   })
 
-  it('abre o e-mail como fallback quando a API não responde', async () => {
+  it('oferece Gmail, WhatsApp e app de e-mail com a mensagem preenchida quando a API não responde', async () => {
     const user = userEvent.setup()
-    const location = { href: '' }
-    vi.stubGlobal('location', location)
     sendContact.mockRejectedValue(new Error('Network Error'))
-    render(<ContactForm email={DESTINATION} />)
+    render(<ContactForm email={DESTINATION} whatsapp="5533999990000" />)
 
     await fillForm(user)
 
-    await waitFor(() => expect(location.href).toMatch(/^mailto:contato@exemplo\.com\?subject=/))
-    expect(location.href).toContain(encodeURIComponent('ana@exemplo.com'))
-    expect(screen.getByRole('status')).toHaveTextContent(/aplicativo de e-mail/)
+    expect(await screen.findByRole('alert')).toHaveTextContent('Não consegui enviar agora')
+    const gmail = new URL(screen.getByRole('link', { name: /Gmail/ }).getAttribute('href'))
+    expect(gmail.searchParams.get('to')).toBe(DESTINATION)
+    expect(gmail.searchParams.get('body')).toContain('Gostaria de conversar.')
+    expect(screen.getByRole('link', { name: /WhatsApp/ })).toHaveAttribute(
+      'href',
+      expect.stringMatching(/^https:\/\/wa\.me\/5533999990000\?text=/),
+    )
+    expect(screen.getByRole('link', { name: /Outro app/ })).toHaveAttribute(
+      'href',
+      expect.stringMatching(/^mailto:contato@exemplo\.com\?subject=/),
+    )
+    expect(screen.getByLabelText('Mensagem')).toHaveValue('Gostaria de conversar.')
   })
 })

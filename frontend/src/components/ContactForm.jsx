@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import Button from './Button'
+import ContactFallback from './ContactFallback'
 import { submitContact } from './submitContact'
 import { validateContact } from './validateContact'
 import styles from './ContactForm.module.css'
@@ -14,18 +15,13 @@ const EMPTY_VALUES = { nome: '', email: '', mensagem: '' }
 const SENDING_STATUS = 'Enviando...'
 const SUCCESS_STATUS = 'Mensagem enviada! Vou responder em breve.'
 
-// Usado quando a API não responde: o envio abre o cliente de e-mail do visitante com a mensagem pronta.
-function buildMailto(destination, { nome, email, mensagem }) {
-  const subject = `Contato pelo portfólio — ${nome.trim()}`
-  const body = `${mensagem.trim()}\n\n---\nNome: ${nome.trim()}\nE-mail: ${email.trim()}`
-  return `mailto:${destination}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-}
-
-export default function ContactForm({ email: destination }) {
+export default function ContactForm({ email: destination, whatsapp }) {
   const [values, setValues] = useState(EMPTY_VALUES)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('')
   const [sending, setSending] = useState(false)
+  // Cópia dos dados enviados quando a API falha, para montar os links alternativos.
+  const [fallbackValues, setFallbackValues] = useState(null)
   const fieldRefs = useRef({})
 
   function handleChange(event) {
@@ -51,6 +47,7 @@ export default function ContactForm({ email: destination }) {
 
     setSending(true)
     setStatus(SENDING_STATUS)
+    setFallbackValues(null)
     try {
       const result = await submitContact(values)
       if (result.errors) {
@@ -62,10 +59,8 @@ export default function ContactForm({ email: destination }) {
       setValues(EMPTY_VALUES)
       setStatus(SUCCESS_STATUS)
     } catch {
-      window.location.href = buildMailto(destination, values)
-      setStatus(
-        `Seu aplicativo de e-mail foi aberto. Se nada aconteceu, escreva diretamente para ${destination}.`,
-      )
+      setStatus('')
+      setFallbackValues(values)
     } finally {
       setSending(false)
     }
@@ -117,6 +112,9 @@ export default function ContactForm({ email: destination }) {
       <p role="status" className={styles.status}>
         {status}
       </p>
+      {fallbackValues && (
+        <ContactFallback destination={destination} whatsapp={whatsapp} values={fallbackValues} />
+      )}
     </form>
   )
 }

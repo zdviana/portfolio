@@ -31,7 +31,8 @@ class ProjectServiceTest {
 
         List<ProjectResponse> result = projectService.listAll();
 
-        assertThat(result).extracting(ProjectResponse::slug).containsExactly("portfolio", "estufa-iot");
+        assertThat(result.stream().map(response -> response.slug()).toList())
+                .containsExactly("portfolio", "estufa-iot");
         assertThat(result.get(0).tags()).containsExactly("React");
     }
 

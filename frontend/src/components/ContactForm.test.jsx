@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { sendContact } from '../services/api'
 import ContactForm from './ContactForm'
@@ -68,6 +68,22 @@ describe('ContactForm', () => {
     expect(email).toHaveAttribute('aria-invalid', 'true')
     expect(email).toHaveAccessibleDescription('E-mail já cadastrado.')
     expect(email).toHaveFocus()
+  })
+
+  it('avisa que o servidor está acordando quando a resposta demora', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+    sendContact.mockReturnValue(new Promise(() => {}))
+    render(<ContactForm email={DESTINATION} />)
+
+    await fillForm(user)
+    expect(screen.getByRole('status')).toHaveTextContent('Enviando...')
+
+    await act(() => vi.advanceTimersByTimeAsync(5000))
+
+    expect(screen.getByRole('status')).toHaveTextContent('Acordando o servidor')
+    expect(screen.getByRole('button', { name: 'Enviar mensagem' })).toBeDisabled()
+    vi.useRealTimers()
   })
 
   it('oferece Gmail, WhatsApp e app de e-mail com a mensagem preenchida quando a API não responde', async () => {

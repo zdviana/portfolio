@@ -13,6 +13,8 @@ const FIELDS = [
 const FIELD_ORDER = FIELDS.map((field) => field.name)
 const EMPTY_VALUES = { nome: '', email: '', mensagem: '' }
 const SENDING_STATUS = 'Enviando...'
+const WAKING_STATUS = 'Acordando o servidor, isso pode levar até 1 minuto. Não feche a página.'
+const WAKING_DELAY_MS = 5000
 const SUCCESS_STATUS = 'Mensagem enviada! Vou responder em breve.'
 
 export default function ContactForm({ email: destination, whatsapp }) {
@@ -48,6 +50,7 @@ export default function ContactForm({ email: destination, whatsapp }) {
     setSending(true)
     setStatus(SENDING_STATUS)
     setFallbackValues(null)
+    const wakingTimer = setTimeout(() => setStatus(WAKING_STATUS), WAKING_DELAY_MS)
     try {
       const result = await submitContact(values)
       if (result.errors) {
@@ -62,6 +65,7 @@ export default function ContactForm({ email: destination, whatsapp }) {
       setStatus('')
       setFallbackValues(values)
     } finally {
+      clearTimeout(wakingTimer)
       setSending(false)
     }
   }

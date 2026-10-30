@@ -48,7 +48,7 @@ cd backend
 ./mvnw test              # sobe um PostgreSQL temporário via Testcontainers
 ```
 
-Em produção, o front lê a URL da API de `VITE_API_URL` (veja `frontend/.env.example`) e a API aceita as origens de `CORS_ALLOWED_ORIGINS`; o banco é configurado por `DB_URL`, `DB_USER` e `DB_PASSWORD`.
+Em produção, o front lê a URL da API de `VITE_API_URL` (veja `frontend/.env.example`) e a API aceita as origens de `CORS_ALLOWED_ORIGINS`; o banco é configurado por `DB_URL`, `DB_USER` e `DB_PASSWORD`. O aviso por e-mail do formulário usa a API do Resend (`MAIL_ENABLED`, `RESEND_API_KEY`, `MAIL_TO`; veja `backend/.env.example`). A imagem de produção está em `backend/Dockerfile`.
 
 ## Estrutura
 

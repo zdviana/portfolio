@@ -1,68 +1,77 @@
 package dev.daviviana.portfolio.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+import java.io.IOException;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.springframework.mail.MailSendException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.RestClient;
 
 class ContactEmailNotifierTest {
 
     private static final Instant CREATED_AT = Instant.parse("2026-10-14T12:30:00Z");
+    private static final String API_URL = "https://api.resend.com/emails";
 
-    private final JavaMailSender mailSender = mock(JavaMailSender.class);
+    private final RestClient.Builder builder = RestClient.builder().baseUrl("https://api.resend.com");
+    private final MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
     private final ContactEmailNotifier notifier =
-            new ContactEmailNotifier(mailSender, "remetente@gmail.com", "daviviana.dev@gmail.com");
+            new ContactEmailNotifier(builder.build(), "Portfolio <onboarding@resend.dev>", "daviviana.dev@gmail.com");
 
     @Test
-    void sendsMessageToOwnerWithVisitorAsReplyTo() {
-        ContactMessageCreated event = new ContactMessageCreated(
-                7L, "Ana", "ana@exemplo.com", "Olá, gostaria de conversar.", CREATED_AT);
+    void postsMessageToOwnerWithVisitorAsReplyTo() {
+        server.expect(requestTo(API_URL))
+                .andExpect(method(HttpMethod.POST))
+                .andExpect(jsonPath("$.from").value("Portfolio <onboarding@resend.dev>"))
+                .andExpect(jsonPath("$.to[0]").value("daviviana.dev@gmail.com"))
+                .andExpect(jsonPath("$.reply_to").value("ana@exemplo.com"))
+                .andExpect(jsonPath("$.subject").value("Contato pelo portfólio — Ana"))
+                .andExpect(jsonPath("$.text").value(containsString("Olá, gostaria de conversar.")))
+                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
 
-        notifier.onContactMessageCreated(event);
+        notifier.onContactMessageCreated(event("Ana", "ana@exemplo.com"));
 
-        SimpleMailMessage mail = capturedMail();
-        assertThat(mail.getFrom()).isEqualTo("remetente@gmail.com");
-        assertThat(mail.getTo()).containsExactly("daviviana.dev@gmail.com");
-        assertThat(mail.getReplyTo()).isEqualTo("ana@exemplo.com");
-        assertThat(mail.getSubject()).isEqualTo("Contato pelo portfólio — Ana");
-        assertThat(mail.getText())
-                .contains("Nome: Ana", "E-mail: ana@exemplo.com", "Data: 14/10/2026 09:30",
-                        "Olá, gostaria de conversar.");
+        server.verify();
     }
 
     @Test
     void removesLineBreaksFromSubject() {
-        ContactMessageCreated event = new ContactMessageCreated(
-                7L, "Ana\r\nBcc: alguem@exemplo.com", "ana@exemplo.com", "Olá, gostaria de conversar.", CREATED_AT);
+        server.expect(requestTo(API_URL))
+                .andExpect(jsonPath("$.subject").value("Contato pelo portfólio — Ana Bcc: alguem@exemplo.com"))
+                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
 
-        notifier.onContactMessageCreated(event);
+        notifier.onContactMessageCreated(
+                new ContactMessageCreated(7L, "Ana\r\nBcc: alguem@exemplo.com", "ana@exemplo.com",
+                        "Olá, gostaria de conversar.", CREATED_AT));
 
-        String subject = capturedMail().getSubject();
-        assertThat(subject).doesNotContain("\r", "\n");
-        assertThat(subject).isEqualTo("Contato pelo portfólio — Ana Bcc: alguem@exemplo.com");
+        server.verify();
     }
 
     @Test
-    void doesNotPropagateMailFailure() {
-        doThrow(new MailSendException("SMTP indisponível")).when(mailSender).send(any(SimpleMailMessage.class));
-        ContactMessageCreated event = new ContactMessageCreated(
-                7L, "Ana", "ana@exemplo.com", "Olá, gostaria de conversar.", CREATED_AT);
+    void doesNotPropagateApiError() {
+        server.expect(requestTo(API_URL)).andRespond(withServerError());
 
-        assertThatNoException().isThrownBy(() -> notifier.onContactMessageCreated(event));
+        assertThatNoException().isThrownBy(() -> notifier.onContactMessageCreated(event("Ana", "ana@exemplo.com")));
     }
 
-    private SimpleMailMessage capturedMail() {
-        ArgumentCaptor<SimpleMailMessage> captor = ArgumentCaptor.forClass(SimpleMailMessage.class);
-        verify(mailSender).send(captor.capture());
-        return captor.getValue();
+    @Test
+    void doesNotPropagateNetworkFailure() {
+        server.expect(requestTo(API_URL)).andRespond(request -> {
+            throw new IOException("conexão recusada");
+        });
+
+        assertThatNoException().isThrownBy(() -> notifier.onContactMessageCreated(event("Ana", "ana@exemplo.com")));
+    }
+
+    private static ContactMessageCreated event(String name, String email) {
+        return new ContactMessageCreated(7L, name, email, "Olá, gostaria de conversar.", CREATED_AT);
     }
 }
